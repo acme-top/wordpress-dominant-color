@@ -1,8 +1,12 @@
+.compat-field-dominant-color td label.setting {
+	padding-top: 5px;
+}
+
 .dominant-colour-square {
 	width: 30px;
 	height: 30px;
 	display: inline-block;
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 .dominant-colour-square:hover {

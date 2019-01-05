@@ -107,21 +107,26 @@ function add_colour_dominance_fields($fields, $post) {
 	//Get the dominant colour pallete, or rebuild it if it doesn't exist.
 	$palette = get_color_data($post->ID, 'color_palette_hex', true);
 	if ($palette === false) {
-		$html = __('No Color Dominance Available.','dominant-color');
-		$html .= '<br /><a href="#" class="trigger-rebuild" data-dominance-rebuild="'.$post->ID.'">';
+		$html = '<label class="setting">';
+		$html .= __('No Color Dominance Available.','dominant-color');
+		$html .= '<a href="#" class="trigger-rebuild" data-dominance-rebuild="'.$post->ID.'" data-dominance-rebuild-text="'.__( 'Building Color Palette...', 'dominant-color' ).'">';
 		$html .= __('Calculate Now?','dominant-color');
-		$html .= '</a>';
+		$html .= '</a></label>';
 	} else {
 		$dominantColor = get_color_data($post->ID, 'dominant_color_hex', true, false);
 
-		$palette = array_merge((array) $dominantColor, $palette);
+		// 去重
+		if(!in_array($dominantColor, $palette)){
+			$palette = array_merge((array) $dominantColor, $palette);
+		}
+		
 		$current_dominance = get_color_data($post->ID, 'dominant_color_hex', true);
 
 		$htmls = array();
 		foreach($palette as $pal) {
 			$html = '<div class="dominant-colour-square';
 			if ($pal == $current_dominance) $html .= ' selected';
-			$html .= '" data-col="'.$pal.'" style="background-color: '.$pal.'"></div>';
+			$html .= '" data-col="'.$pal.'" style="background-color: '.$pal.'" title="'.$pal.'"></div>';
 			$htmls[] = $html;
 		}
 		$html = '<div class="dominantColourHolder">'.implode($htmls).'</div>';
